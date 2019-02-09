@@ -4,7 +4,7 @@
 *
 * Every 2 seconds to control motor positive inversion
 * 
-* @author linfeng(490289303@qq.com)
+* @author lol(490289303@qq.com)
 * @version  V1.0
 * @date  2016-4-5
 */
