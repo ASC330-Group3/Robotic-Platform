@@ -1,7 +1,7 @@
 
 
 #include <Encoder.h>
-Encoder myEnc(2, 3); //0 1
+Encoder myEnc(2, 9); //0 1
 
 const int E1 = 3; ///<Motor1 Speed
 const int E2 = 11;///<Motor2 Speed
@@ -13,21 +13,22 @@ const int M2 = 12;///<Motor2 Direction
 const int M3 = 8; ///<Motor3 Direction
 const int M4 = 7; ///<Motor4 Direction
 
-volatile long diffPosition = 0;
-volatile long Position = 0;
+long diffPosition = 0;
+long Position = 0;
 long time1 = 0;
 long time2 = 0;
 double desiredM2 = 4500;
-double kp = 0.04; //0.08
-double ki = 0.01;
-double offset = 0;
+double kp = 0.08; //0.08
+double ki = 0.02;
+long offset = 0;
 long totaloffset = 0;
 double countps = 0;
-double PWM2 = 0;
+long PWM2 = 0;
 double countpsM2 = 0;
 double directionM3=0;
+double interval=0;
 
-void M2_advance(int Speed,int Direction) ///<Motor2 Advance
+void M3_advance(int Speed,int Direction) ///<Motor3 Advance
 {
   digitalWrite(M3, Direction);
   analogWrite(E3, Speed);
@@ -48,7 +49,7 @@ void setup ()
   pinMode(M3,OUTPUT);
   pinMode(M4,OUTPUT);
   pinMode(2,INPUT);
-  pinMode(3,INPUT);
+  pinMode(9,INPUT);
   //digitalWrite(M1, LOW);
   //analogWrite(E1, 0);
 
@@ -66,10 +67,9 @@ void loop ()
   
   offset = desiredM2 - countps;
   totaloffset += offset;
-  
-  //Serial.println (totaloffset);
   PWM2 = (offset * kp) + (totaloffset * ki);
-  //countpsM2=map(PWM2,0,6400*5,0,255);
+  countpsM2=map(PWM2,0,6400,0,255);
+  
   if (PWM2 > 255)
   {
     PWM2 = 255;
@@ -86,10 +86,8 @@ void loop ()
   {
     directionM3=1;
   }
-  Serial.println (countps);
-  //M2_advance(PWM2,directionM3);
-
-
+  Serial.println(countps);
+  M3_advance(countpsM2,directionM3);
   diffPosition = Position;
   time1 = time2;
   delay(15);
