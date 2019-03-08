@@ -120,7 +120,7 @@ void M1_advance(float xvel,float yvel,float rot)
     PWM1 = 255;
   }
   
-  Serial.println(PWM1);
+//  Serial.println(PWM1);
   diffPosition1 = Position1;
   time3 = time4;
    
@@ -268,7 +268,7 @@ void setup ()
   pinMode(M4,OUTPUT);
   pinMode(2,INPUT);
   pinMode(9,INPUT);
-  Serial.begin(9600);
+//  Serial.begin(9600);
   nh.initNode();
   nh.subscribe(sub);
 
